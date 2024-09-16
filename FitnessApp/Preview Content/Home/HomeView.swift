@@ -12,10 +12,16 @@ struct HomeView: View {
     @State var active: Int = 32
     @State var stand: Int = 5
     
+    var mockActivities = [
+        Activity(id: 1, title: "Standing", subtitle: "Hours", image: "figure.stand", tintColor: .blue, amount: "4"),
+        Activity(id: 2, title: "Walking", subtitle: "Hours", image: "figure.walk", tintColor: .green, amount: ""),
+        Activity(id: 3, title: "Running", subtitle: "Hours", image: "figure.run", tintColor: .red, amount: ""),
+       Activity(id: 4, title: "Cycling", subtitle: "Hours", image: "figure.cycle", tintColor: .yellow, amount: "")
+    ]
     
     var body: some View {
         ScrollView (showsIndicators: false) {
-            VStack {
+            VStack (alignment: .leading) {
                 Text("Welcome")
                     .font(.largeTitle)
                     .padding()
@@ -60,18 +66,40 @@ struct HomeView: View {
                         
                         ProgressCircleView(progress: $active, color:.green, goal: 60).padding(.all,20)
                         ProgressCircleView(progress: $stand, color:.blue, goal: 8).padding(.all,40)
-                       
+                        
                     }
                     
                     Spacer()
-                    
                 }
+                
+                HStack{
+                    Text("Fitness activity")
+                    
+                    Spacer()
+                    
+                    Button {
+                        print("Show more")
+                    } label: {
+                        Text("Show more")
+                            .padding(.all, 10)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .cornerRadius(20)
+                    }
+                }.padding(.horizontal)
+
+                LazyVGrid(columns: Array(repeating: GridItem(spacing: 20), count: 2 )){
+                    ForEach(mockActivities, id: \.id) { activity in
+                        ActivityCard(activity: activity)
+                    }
+                }
+                
+            }.padding(.horizontal)
             }
         }
     }
     
-}
-
-#Preview {
-    HomeView()
-}
+    
+    #Preview {
+        HomeView()
+    }
